@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Swarms libs -->
+	<script src="js/socket.io.js"></script>
+	<script src="js/SwarmDebug.js"></script>
+    <script src="js/SwarmClient.js"></script>
+
+	<!-- / Swarms libs -->
+</head>
+<body>
+	<div >
+
+		<!-- content -->
+		<div id="console"></div>
+		<!-- /content -->
+		
+	</div>
+
+	<script type="application/javascript">
+		
+		var host = "localhost";
+		var port = 8080;
+		var username = "testUser";
+		var pass = "ok";
+		var tenant = "testTenant";
+		var ctor =  "testCtor";
+	
+		var securityErrorFunction = function(err, data) {
+			console.log('Invalid user or password...', err, data);
+		}
+
+		var errorFunction = function(err) {
+			console.log('Invalid connection...', err);
+		}
+	
+		var swarmConnection = new SwarmClient(host, port, username, pass, tenant, ctor, securityErrorFunction, errorFunction);
+		swarmHub.resetConnection(swarmConnection);
+
+		swarmHub.on('login.js', "success", function (swarm) {
+			loggedIn = swarm.authenticated;
+			localStorage.setItem("sessionId", swarm.meta.sessionId);
+			localStorage.setItem("userId", swarm.userId);
+			
+			console.log("Authenticated!");
+			swarmHub.off("login.js","success");
+			
+			swarmHub.startSwarm("HelloWorldSwarm.js", "ctor");
+		});
+		
+		swarmHub.on('HelloWorldSwarm.js', "returnValue", function (swarm) {
+			<!-- alert(swarm.message) -->
+		});
+		
+	</script>
+	
+	<canvas id="c" width="400" height="400" style="border:solid 1px #000"></canvas>
+	<a href="javascript:undo();">undo</a>
+	<a href="javascript:redo();">redo</a>
+	<script>
+		var canvas = new fabric.Canvas('c');
+		canvas.isDrawingMode = true;
+		canvas.on('object:added',function(){
+		  if(!isRedoing){
+			h = [];
+		  }
+		  isRedoing = false;
+		});
+
+		var isRedoing = false;
+		var h = [];
+		function undo(){
+		  if(canvas._objects.length>0){
+		   h.push(canvas._objects.pop());
+		   canvas.renderAll();
+		  }
+		}
+		function redo(){
+		  
+		  if(h.length>0){
+			isRedoing = true;
+		   canvas.add(h.pop());
+		  }
+		}
+	</script>	
+</body>
+</html>
+    <script src="js/SwarmHub.js"></script>
