@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 npm install
 export NODE_PATH=`pwd`"/node_modules"
 export SWARM_PATH=`pwd`
