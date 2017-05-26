@@ -50,39 +50,30 @@
 		});
 		
 		swarmHub.on('HelloWorldSwarm.js', "returnValue", function (swarm) {
-			<!-- alert(swarm.message) -->
+			
+			alert(swarm.message);
 		});
 		
 	</script>
 	
 	<canvas id="c" width="400" height="400" style="border:solid 1px #000"></canvas>
-	<a href="javascript:undo();">undo</a>
-	<a href="javascript:redo();">redo</a>
+
 	<script>
 		var canvas = new fabric.Canvas('c');
 		canvas.isDrawingMode = true;
+		var test = 1;
+		
 		canvas.on('object:added',function(){
-		  if(!isRedoing){
-			h = [];
-		  }
-		  isRedoing = false;
+		<!-- canvas_objects[canvas_objects.length - 1] last object added -->
+			swarmHub.startSwarm("HelloWorldSwarm.js", "ctor");
+			swarmHub.on('HelloWorldSwarm.js', "returnValue2", function (swarm) {
+				<!-- localStorage.setItem("test", swarm.test); -->
+				alert(swarm.message);
+			});
+
 		});
 
-		var isRedoing = false;
-		var h = [];
-		function undo(){
-		  if(canvas._objects.length>0){
-		   h.push(canvas._objects.pop());
-		   canvas.renderAll();
-		  }
-		}
-		function redo(){
-		  
-		  if(h.length>0){
-			isRedoing = true;
-		   canvas.add(h.pop());
-		  }
-		}
+		
 	</script>	
 </body>
 </html>
