@@ -66,5 +66,3 @@ fabric.properties
 .idea/
 
 logs/
-logs/debugs.logs
-logs/errors.logs
