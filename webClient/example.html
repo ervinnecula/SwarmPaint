@@ -44,8 +44,6 @@
 			localStorage.setItem("userId", swarm.userId);
 			console.log("Authenticated!");
 			swarmHub.off("login.js","success");
-			
-			swarmHub.startSwarm("HelloWorldSwarm.js", "ctor");
 		});
 		
 //		swarmHub.on('HelloWorldSwarm.js', "returnValue", function (swarm) {
@@ -61,16 +59,17 @@
 		var canvas = new fabric.Canvas('c');
 		canvas.isDrawingMode = true;
 
+        canvas.on('object:added',function(){
+            <!-- canvas_objects[canvas_objects.length - 1] last object added -->
+            swarmHub.startSwarm("HelloWorldSwarm.js", "ctor");
+
+        });
+
         swarmHub.on('HelloWorldSwarm.js', "return", function (swarm) {
-
-            //problema aici e ca raspunsul de la server, unde setez eu cuvantul "snail"
-			//lungimea cuvantului venit de la server "test" deja a fost calculata..
             swarm.clientValue = "snail";
-
-            canvas.on('object:added',function(){
-                <!-- canvas_objects[canvas_objects.length - 1] last object added -->
-				alert(swarm.message);
-            });
+            //problema aici e ca raspunsul de la server, unde setez eu cuvantul "snail"
+            //lungimea cuvantului venit de la server "test" deja a fost calculata..
+            alert(swarm.message);
         });
 
 
