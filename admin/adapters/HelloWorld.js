@@ -8,3 +8,7 @@ hello = function() {
 world = function() {
 	return "World";
 }
+
+getLengthOfClientWord = function (word) {
+    return word.length;
+}
