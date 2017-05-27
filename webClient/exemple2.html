@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Swarms libs -->
+    <script src="js/socket.io.js"></script>
+    <script src="js/SwarmDebug.js"></script>
+    <script src="js/SwarmClient.js"></script>
+    <script src="js/SwarmHub.js"></script>
+    <script src="js/fabric.js"></script>
+    <!-- / Swarms libs -->
+</head>
+<body>
+<div >
+
+    <!-- content -->
+    <div id="console"></div>
+    <!-- /content -->
+
+</div>
+
+<script type="application/javascript">
+
+    var host = "localhost";
+    var port = 8080;
+    var username = "testUser";
+    var pass = "ok";
+    var tenant = "testTenant";
+    var ctor =  "testCtor";
+
+    var securityErrorFunction = function(err, data) {
+        console.log('Invalid user or password...', err, data);
+    }
+
+    var errorFunction = function(err) {
+        console.log('Invalid connection...', err);
+    }
+
+    var swarmConnection = new SwarmClient(host, port, username, pass, tenant, ctor, securityErrorFunction, errorFunction);
+    swarmHub.resetConnection(swarmConnection);
+
+    swarmHub.on('login.js', "success", function (swarm) {
+        loggedIn = swarm.authenticated;
+        localStorage.setItem("sessionId", swarm.meta.sessionId);
+        localStorage.setItem("userId", swarm.userId);
+        console.log("Authenticated!");
+        swarmHub.off("login.js","success");
+    });
+
+    //		swarmHub.on('HelloWorldSwarm.js', "returnValue", function (swarm) {
+    //
+    //			alert(swarm.message);
+    //		});
+
+</script>
+
+<canvas id="c" width="400" height="400" style="border:solid 1px #000"></canvas>
+
+<script>
+    var canvas = new fabric.Canvas('c');
+    canvas.isDrawingMode = true;
+
+    canvas.on('object:added',function(){
+        <!-- canvas_objects[canvas_objects.length - 1] last object added -->
+        swarmHub.startSwarm("ObjectDrawn.js", "ctor", canvas.getObjects()[canvas.getObjects().length - 1]);
+
+    });
+
+</script>
+</body>
+</html>
