@@ -4,38 +4,30 @@ var swarm =
         name:"HelloWorldSwarm.js"
     },
     vars:{
-        clientValue : "test"
+        lastDrawing : null
     },
 
-    ctor:function(){
-        //this.swarm("phase1");
-        this.swarm("returnToClient")
+    ctor:function(drawnObject){
+        this.lastDrawing = drawnObject;
+        this.swarm("persistDrawnObject")
     },
 
-    returnToClient: {
+    persistDrawnObject: {
         node:"HelloWorld",
         code:function(){
-            console.log("Word is: " + this.clientValue);
-            this.message = "Word is of length " + getLengthOfClientWord(this.clientValue);
+            persistDrawnObject(this.lastDrawing);
+            // this.swarm("broadcastDrawnObjectToCollaborators")
+            this.broadcast("broadcastDrawnObjectToCollaborators");
+        }
+    },
+
+    broadcastDrawnObjectToCollaborators: {
+        node:"All",
+        code:function(){
+            this.message = this.lastDrawing;
             this.home("return")
         }
     },
-
- /*   phase1: {
-        node:"HelloWorld",
-        code:function(){
-			this.message = hello();
-			this.swarm("phase2");
-        }
-    },
-
-	phase2: {
-        node:"HelloWorld",
-        code:function(){
-			this.message += " " + world();
-			this.home("returnValue");
-        }
-    }*/
 }
 
 swarm;

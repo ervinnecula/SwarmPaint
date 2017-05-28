@@ -1,6 +1,8 @@
 var core = require ("swarmcore");
 thisAdapter = core.createAdapter("HelloWorld");
 
+var drawnObjects = [];
+
 hello = function() {
 	return "Hello";
 }
@@ -9,6 +11,6 @@ world = function() {
 	return "World";
 }
 
-getLengthOfClientWord = function (word) {
-    return word.length;
-}
+persistDrawnObject = function(drawnObject) {
+    drawnObjects.push(drawnObject);
+};

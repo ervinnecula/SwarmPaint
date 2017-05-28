@@ -45,12 +45,6 @@
 			console.log("Authenticated!");
 			swarmHub.off("login.js","success");
 		});
-		
-//		swarmHub.on('HelloWorldSwarm.js', "returnValue", function (swarm) {
-//
-//			alert(swarm.message);
-//		});
-		
 	</script>
 	
 	<canvas id="c" width="400" height="400" style="border:solid 1px #000"></canvas>
@@ -60,20 +54,19 @@
 		canvas.isDrawingMode = true;
 
         canvas.on('object:added',function(){
-            <!-- canvas_objects[canvas_objects.length - 1] last object added -->
-            swarmHub.startSwarm("HelloWorldSwarm.js", "ctor");
+            var canvas_objects = canvas._objects;
+            if(canvas_objects.length !== 0) {
+                var last = canvas_objects[canvas_objects.length - 1]; //Get last object
+            }
+            swarmHub.startSwarm("HelloWorldSwarm.js", "ctor", last);
 
         });
 
         swarmHub.on('HelloWorldSwarm.js', "return", function (swarm) {
-            swarm.clientValue = "snail";
-            //problema aici e ca raspunsul de la server, unde setez eu cuvantul "snail"
-            //lungimea cuvantului venit de la server "test" deja a fost calculata..
-            alert(swarm.message);
+            var canvas_objects = canvas._objects;
+//			TODO: add swarm.message object, last line, to broadcasted client's canvas
+            console.log(swarm.message);
         });
-
-
-
 		
 	</script>	
 </body>
