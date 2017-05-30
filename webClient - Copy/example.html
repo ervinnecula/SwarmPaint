@@ -58,22 +58,14 @@
             if(canvas_objects.length !== 0) {
                 var last = canvas_objects[canvas_objects.length - 1]; //Get last object
             }
-            swarmHub.startSwarm("HelloWorldSwarm.js", "ctor", last, localStorage.getItem("userId"));
+            swarmHub.startSwarm("HelloWorldSwarm.js", "ctor", last);
 
         });
 
-        swarmHub.on('HelloWorldSwarm.js', "broadcastDrawnObjectToCollaborators", function (swarm) {
+        swarmHub.on('HelloWorldSwarm.js', "return", function (swarm) {
             var canvas_objects = canvas._objects;
 //			TODO: add swarm.message object, last line, to broadcasted client's canvas
-            console.log(swarm.lastDrawing);
-            var l = new fabric.Line(swarm.lastDrawing);
-
-            var g = new fabric.Group();
-            g.add(l);
-            g.addWithUpdate();
-            g.setCoords();
-            canvas.add(g);
-			canvas.renderAll();
+            console.log(swarm.message);
         });
 		
 	</script>	
