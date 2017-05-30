@@ -24,6 +24,7 @@ var swarm =
     broadcastDrawnObjectToCollaborators: {
         node:"All",
         code:function(){
+            console.log("Running in ", thisAdapter.nodeName);
             this.message = this.lastDrawing;
             this.home("return")
         }
